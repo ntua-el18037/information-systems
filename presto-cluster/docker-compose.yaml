@@ -8,8 +8,9 @@ services:
       - "8080:8080"
     volumes:
       - ./coordinator/config.properties:/opt/presto-server/etc/config.properties
+      - ./coordinator/node.properties:/opt/presto-server/etc/node.properties
+      - ./coordinator/jvm.config:/opt/presto-server/etc/jvm.config
       - ./catalog:/opt/presto-server/etc/catalog
-    restart: always
   
   worker1:
     image: prestodb/presto:latest
@@ -18,7 +19,7 @@ services:
       - coordinator
     volumes:
       - ./worker1/config.properties:/opt/presto-server/etc/config.properties
-    restart: always
+      - ./worker1/node.properties:/opt/presto-server/etc/node.properties
 
   worker2:
     image: prestodb/presto:latest
@@ -27,13 +28,14 @@ services:
       - coordinator
     volumes:
       - ./worker2/config.properties:/opt/presto-server/etc/config.properties
-    restart: always
+      - ./worker2/node.properties:/opt/presto-server/etc/node.properties
 
   mongo:
     image: mongo
     ports:
       - "27017:27017"
-    restart: always
+    volumes:
+      - mongodata:/data/db
   
   postgres:
     image: postgres
@@ -43,7 +45,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
       POSTGRES_DB: testdb
-    restart: always
 
   cassandra:
     image: cassandra:latest
@@ -52,4 +53,6 @@ services:
     environment:
       CASSANDRA_USER: cassandra
       CASSANDRA_PASSWORD: cassandra
-    restart: always
+
+volumes:
+  mongodata:
