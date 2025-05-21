@@ -1,0 +1,55 @@
+version: '3.9'
+
+services:
+  coordinator:
+    image: prestodb/presto:latest
+    container_name: coordinator
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./coordinator/config.properties:/opt/presto-server/etc/config.properties
+      - ./catalog:/opt/presto-server/etc/catalog
+    restart: always
+  
+  worker1:
+    image: prestodb/presto:latest
+    container_name: worker1
+    depends_on:
+      - coordinator
+    volumes:
+      - ./worker1/config.properties:/opt/presto-server/etc/config.properties
+    restart: always
+
+  worker2:
+    image: prestodb/presto:latest
+    container_name: worker2
+    depends_on:
+      - coordinator
+    volumes:
+      - ./worker2/config.properties:/opt/presto-server/etc/config.properties
+    restart: always
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    restart: always
+  
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: testdb
+    restart: always
+
+  cassandra:
+    image: cassandra:latest
+    ports:
+      - "9042:9042"
+    environment:
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASSWORD: cassandra
+    restart: always
