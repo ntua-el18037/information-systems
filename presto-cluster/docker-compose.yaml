@@ -15,6 +15,8 @@ services:
   worker1:
     image: prestodb/presto:latest
     container_name: worker1
+    ports:
+      - "8081:8081"
     depends_on:
       - coordinator
     volumes:
@@ -24,6 +26,8 @@ services:
   worker2:
     image: prestodb/presto:latest
     container_name: worker2
+    ports:
+      - "8082:8082"
     depends_on:
       - coordinator
     volumes:
@@ -36,6 +40,9 @@ services:
       - "27017:27017"
     volumes:
       - mongodata:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
   
   postgres:
     image: postgres
