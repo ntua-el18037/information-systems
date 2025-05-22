@@ -22,6 +22,8 @@ services:
     volumes:
       - ./worker1/config.properties:/opt/presto-server/etc/config.properties
       - ./worker1/node.properties:/opt/presto-server/etc/node.properties
+      - ./worker1/jvm.config:/opt/presto-server/etc/jvm.config
+      - ./catalog:/opt/presto-server/etc/catalog
 
   worker2:
     image: prestodb/presto:latest
@@ -33,6 +35,8 @@ services:
     volumes:
       - ./worker2/config.properties:/opt/presto-server/etc/config.properties
       - ./worker2/node.properties:/opt/presto-server/etc/node.properties
+      - ./worker2/jvm.config:/opt/presto-server/etc/jvm.config
+      - ./catalog:/opt/presto-server/etc/catalog
 
   mongo:
     image: mongo
