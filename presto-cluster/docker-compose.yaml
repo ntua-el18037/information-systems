@@ -43,7 +43,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongodata:/data/db
+      - mongo-data:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
@@ -52,6 +52,8 @@ services:
     image: postgres
     ports:
       - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
@@ -61,9 +63,13 @@ services:
     image: cassandra:latest
     ports:
       - "9042:9042"
+    volumes:
+      - cassandra-data:/var/lib/cassandra
     environment:
       CASSANDRA_USER: cassandra
       CASSANDRA_PASSWORD: cassandra
 
 volumes:
-  mongodata:
+  mongo-data:
+  cassandra-data:
+  postgres-data:
