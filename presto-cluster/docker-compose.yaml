@@ -13,6 +13,7 @@ services:
       - ./coordinator/jvm.config:/opt/presto-server/etc/jvm.config
       - ./coordinator/catalog:/opt/presto-server/etc/catalog
       - ./insert-postgres.sql:/opt/presto-server/etc/insert-postgres.sql
+      - ./insert-mongo.sql:/opt/presto-server/etc/insert-mongo.sql
 
   worker1:
     image: prestodb/presto:latest
@@ -50,5 +51,14 @@ services:
       POSTGRES_PASSWORD: presto
       POSTGRES_DB: presto
 
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
 volumes:
   postgresql-data:
+  mongo_data:
