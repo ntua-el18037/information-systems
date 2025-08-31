@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  presto-coordinator:
+    image: prestodb/presto:latest
+    container_name: presto-coordinator
+    hostname: presto-coordinator
+    ports:
+      - "8080:8080"   # Expose Presto UI and CLI access
+    volumes:
+      - ./coordinator/config.properties:/opt/presto-server/etc/config.properties
+      - ./coordinator/node.properties:/opt/presto-server/etc/node.properties
+      - ./coordinator/jvm.config:/opt/presto-server/etc/jvm.config
+
+  worker1:
+    image: prestodb/presto:latest
+    container_name: worker1
+    hostname: worker1
+    volumes:
+      - ./worker1/config.properties:/opt/presto-server/etc/config.properties
+      - ./worker1/node.properties:/opt/presto-server/etc/node.properties
+      - ./worker1/jvm.config:/opt/presto-server/etc/jvm.config
+    depends_on:
+      - presto-coordinator
+
+  worker2:
+    image: prestodb/presto:latest
+    container_name: worker2
+    hostname: worker2
+    volumes:
+      - ./worker2/config.properties:/opt/presto-server/etc/config.properties
+      - ./worker2/node.properties:/opt/presto-server/etc/node.properties
+      - ./worker2/jvm.config:/opt/presto-server/etc/jvm.config
+    depends_on:
+      - presto-coordinator
