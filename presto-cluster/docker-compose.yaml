@@ -11,6 +11,8 @@ services:
       - ./coordinator/config.properties:/opt/presto-server/etc/config.properties
       - ./coordinator/node.properties:/opt/presto-server/etc/node.properties
       - ./coordinator/jvm.config:/opt/presto-server/etc/jvm.config
+      - ./coordinator/catalog:/opt/presto-server/etc/catalog
+      - ./insert-postgres.sql:/opt/presto-server/etc/insert-postgres.sql
 
   worker1:
     image: prestodb/presto:latest
@@ -20,6 +22,7 @@ services:
       - ./worker1/config.properties:/opt/presto-server/etc/config.properties
       - ./worker1/node.properties:/opt/presto-server/etc/node.properties
       - ./worker1/jvm.config:/opt/presto-server/etc/jvm.config
+      - ./coordinator/catalog:/opt/presto-server/etc/catalog
     depends_on:
       - presto-coordinator
 
@@ -31,5 +34,21 @@ services:
       - ./worker2/config.properties:/opt/presto-server/etc/config.properties
       - ./worker2/node.properties:/opt/presto-server/etc/node.properties
       - ./worker2/jvm.config:/opt/presto-server/etc/jvm.config
+      - ./coordinator/catalog:/opt/presto-server/etc/catalog
     depends_on:
       - presto-coordinator
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: presto
+      POSTGRES_DB: presto
+
+volumes:
+  postgresql-data:
