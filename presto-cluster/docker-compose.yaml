@@ -15,9 +15,9 @@ services:
       - ./insert-postgres.sql:/opt/presto-server/etc/insert-postgres.sql
       - ./insert-mongo.sql:/opt/presto-server/etc/insert-mongo.sql
       - ./insert-cassandra.sql:/opt/presto-server/etc/insert-cassandra.sql
-    depends_on:
-      cassandra:
-        condition: service_healthy
+    # depends_on:
+    #   cassandra:
+    #     condition: service_healthy
 
   worker1:
     image: prestodb/presto:latest
@@ -64,23 +64,23 @@ services:
     volumes:
       - mongo_data:/data/db
 
-  cassandra:
-    image: cassandra
-    container_name: cassandra
-    ports:
-      - "9042:9042"
-    volumes:
-      - "cassandra-data:/var/lib/cassandra"
-    environment:
-      CASSANDRA_USER: admin
-      CASSANDRA_PASSWORD: admin
-    healthcheck:
-      test: ["CMD-SHELL", "cqlsh -e 'DESCRIBE KEYSPACES' || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 20
+  # cassandra:
+  #   image: cassandra
+  #   container_name: cassandra
+  #   ports:
+  #     - "9042:9042"
+  #   volumes:
+  #     - "cassandra-data:/var/lib/cassandra"
+  #   environment:
+  #     CASSANDRA_USER: admin
+  #     CASSANDRA_PASSWORD: admin
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "cqlsh -e 'DESCRIBE KEYSPACES' || exit 1"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 20
 
 volumes:
   postgresql-data:
   mongo_data:
-  cassandra-data:
+  # cassandra-data:
