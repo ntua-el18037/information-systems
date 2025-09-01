@@ -53,6 +53,7 @@ services:
 
   mongodb:
     image: mongo
+    command: ["--wiredTigerCacheSizeGB", "1"]
     container_name: mongodb
     ports:
       - "27017:27017"
