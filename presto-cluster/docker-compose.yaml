@@ -15,6 +15,9 @@ services:
       - ./insert-postgres.sql:/opt/presto-server/etc/insert-postgres.sql
       - ./insert-mongo.sql:/opt/presto-server/etc/insert-mongo.sql
       - ./insert-cassandra.sql:/opt/presto-server/etc/insert-cassandra.sql
+      - ../benchmark/presto-benchmark-driver:/opt/benchmark-driver/presto-benchmark-driver
+      - ../benchmark/suite.json:/opt/benchmark-driver/suite.json
+      - ../benchmark/sql:/opt/benchmark-driver/sql
     depends_on:
       cassandra:
         condition: service_healthy
@@ -30,30 +33,34 @@ services:
       - ./coordinator/catalog:/opt/presto-server/etc/catalog
     depends_on:
       - presto-coordinator
+    restart: always
 
-  worker2:
-    image: prestodb/presto:latest
-    container_name: worker2
-    hostname: worker2
-    volumes:
-      - ./worker2/config.properties:/opt/presto-server/etc/config.properties
-      - ./worker2/node.properties:/opt/presto-server/etc/node.properties
-      - ./worker2/jvm.config:/opt/presto-server/etc/jvm.config
-      - ./coordinator/catalog:/opt/presto-server/etc/catalog
-    depends_on:
-      - presto-coordinator
+  # Having more workers was causing crashes so keeping only 1 seemed the best solution
+  # worker2:
+  #   image: prestodb/presto:latest
+  #   container_name: worker2
+  #   hostname: worker2
+  #   volumes:
+  #     - ./worker2/config.properties:/opt/presto-server/etc/config.properties
+  #     - ./worker2/node.properties:/opt/presto-server/etc/node.properties
+  #     - ./worker2/jvm.config:/opt/presto-server/etc/jvm.config
+  #     - ./coordinator/catalog:/opt/presto-server/etc/catalog
+  #   depends_on:
+  #     - presto-coordinator
+  #   restart: always
     
-  worker3:
-    image: prestodb/presto:latest
-    container_name: worker3
-    hostname: worker3
-    volumes:
-      - ./worker3/config.properties:/opt/presto-server/etc/config.properties
-      - ./worker3/node.properties:/opt/presto-server/etc/node.properties
-      - ./worker3/jvm.config:/opt/presto-server/etc/jvm.config
-      - ./coordinator/catalog:/opt/presto-server/etc/catalog
-    depends_on:
-      - presto-coordinator
+  # worker3:
+  #   image: prestodb/presto:latest
+  #   container_name: worker3
+  #   hostname: worker3
+  #   volumes:
+  #     - ./worker3/config.properties:/opt/presto-server/etc/config.properties
+  #     - ./worker3/node.properties:/opt/presto-server/etc/node.properties
+  #     - ./worker3/jvm.config:/opt/presto-server/etc/jvm.config
+  #     - ./coordinator/catalog:/opt/presto-server/etc/catalog
+  #   depends_on:
+  #     - presto-coordinator
+  #   restart: always
 
   postgres:
     image: postgres
@@ -66,6 +73,7 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: presto
       POSTGRES_DB: presto
+    restart: always
 
   mongodb:
     image: mongo
@@ -75,6 +83,7 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    restart: always
 
   cassandra:
     image: cassandra:latest

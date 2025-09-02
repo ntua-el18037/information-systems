@@ -1,0 +1,7 @@
+{
+  "tpcds": {
+    "query": ["tpcds_.*"],
+    "schema": ["sf(?<scale>.*)"],
+    "session": {}
+  }
+}

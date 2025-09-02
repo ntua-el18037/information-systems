@@ -1,5 +1,7 @@
-*.txt
+commands.txt
 
 /venv
 
 *.csv
+
+.DS_STORE

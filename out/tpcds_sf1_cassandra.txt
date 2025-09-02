@@ -1,0 +1,9 @@
+suite   query   scale   wallTimeP50     wallTimeMean    wallTimeStd     processCpuTimeP50       processCpuTimeMean      processCpuTimeStd       queryCpuTimeP50 queryCpuTimeMean        queryCpuTimeStd status  error
+tpcds   tpcds_q1        1       3342    3267    561     10130   10523   716     1968    1936    179     pass
+tpcds   tpcds_q10       1       32541   32822   624     57610   57663   1320    12925   13029   423     pass
+tpcds   tpcds_q13       1       20950   20917   1278    63200   64246   2990    22828   22829   698     pass
+tpcds   tpcds_q19       1       11838   11955   255     26950   27180   1330    6159    6126    334     pass
+tpcds   tpcds_q35       1       31644   31392   798     50550   50620   1855    10308   10548   648     pass
+tpcds   tpcds_q54       1       23499   23809   665     38580   40160   3089    6634    6952    655     pass
+tpcds   tpcds_q76       1       22149   22387   989     30980   31286   805     3307    3350    189     pass
+tpcds   tpcds_q94       1       6717    6747    256     13290   13626   800     2608    2644    79      pass
